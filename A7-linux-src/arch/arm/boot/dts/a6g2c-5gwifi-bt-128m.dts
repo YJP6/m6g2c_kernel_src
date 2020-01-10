@@ -1,0 +1,61 @@
+/*
+ * Copyright (C) 2015 Freescale Semiconductor, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "a6g2c-base-128m.dts"
+
+/ {
+	regulators {
+		wlreg_on: fixedregulator@100 {
+			compatible = "regulator-fixed";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-name = "wlreg_on";
+			gpio = <&gpio5 5 0>;
+			startup-delay-us = <100>;
+			enable-active-high;
+		};
+	};
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcmdhd_wlan";
+		wlreg_on-supply = <&wlreg_on>;
+		gpios = <&gpio5 9 0>;
+	};
+};
+
+&flexcan2 {
+	status = "disabled";
+};
+
+&uart2 {
+	fsl,uart-has-rtscts;
+};
+
+&usdhc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usdhc2>;
+	keep-power-in-suspend;
+	enable-sdio-wakeup;
+	non-removable;
+	cd-post;
+	wifi-host;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+};
+
+&iomuxc {
+	pinctrl-0 = <&pinctrl_hog_1 &pinctrl_wifi &pinctrl_blueth>;
+	imx6ul-evk {
+		pinctrl_wifi: wifigrp {
+			fsl,pins = <
+				MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05 	0x17059	/* WL_REG_ON */
+				MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x100b1 /*WL_HOST_WAKE*/
+			>;
+		};
+	};
+};

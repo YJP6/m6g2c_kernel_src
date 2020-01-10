@@ -1,0 +1,39 @@
+/*
+ * Copyright (C) 2015 Freescale Semiconductor, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "a6g2c-base-128m.dts"
+
+&uart2 {
+	status = "okay";
+};
+
+&usdhc2 {
+	status = "disabled";
+};
+
+&adv7180 {
+	status = "disabled";
+};
+
+&iomuxc {
+	pinctrl-0 = <&pinctrl_hog_1 &pinctrl_zigbee>;
+	imx6ul-evk {
+		pinctrl_zigbee: zigbee {
+		   fsl,pins = <
+				MX6UL_PAD_CSI_VSYNC__GPIO4_IO19 	0x17059 /* LowPower */
+				MX6UL_PAD_CSI_HSYNC__GPIO4_IO20 	0x17059 /* SLEEP */
+				MX6UL_PAD_CSI_DATA00__GPIO4_IO21        0x17059 /* WAKE */
+				MX6UL_PAD_CSI_DATA01__GPIO4_IO22        0x17059 /* DEF */
+				MX6UL_PAD_CSI_DATA02__GPIO4_IO23        0x17059 /* ZB_STA */
+				MX6UL_PAD_CSI_DATA03__GPIO4_IO24        0x17059 /* ACK */
+				MX6UL_PAD_SNVS_TAMPER5__GPIO5_IO05      0x17059 /* RESET */
+				MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09      0x17059 /* ZB_ISP */
+			>;
+		};
+	};
+};
